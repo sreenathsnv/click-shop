@@ -1,0 +1,9 @@
+.carousel-item {
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  @media (min-width: 640px) {
+    .carousel {
+      max-width: 100%;
+    }
+  }

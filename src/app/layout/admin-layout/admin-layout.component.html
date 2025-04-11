@@ -1,0 +1,19 @@
+<div class="flex h-screen">
+    <!-- Sidebar -->
+    <div class="w-64 bg-gray-800 text-white p-4">
+      <h2 class="text-xl font-bold mb-4">Admin Panel</h2>
+      <ul class="space-y-2">
+        <li><a routerLink="dashboard" routerLinkActive="font-bold">Dashboard</a></li>
+        <li><a routerLink="users" routerLinkActive="font-bold">User Management</a></li>
+        <li><a routerLink="products" routerLinkActive="font-bold">Product Management</a></li>
+        <li><a routerLink="orders" routerLinkActive="font-bold">Order Management</a></li>
+        <li><button (click)="logout()" class="text-red-400">Logout</button></li>
+      </ul>
+    </div>
+  
+    <!-- Main content -->
+    <div class="flex-1 bg-gray-100 p-6 overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  

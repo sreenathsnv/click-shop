@@ -1,0 +1,23 @@
+:host {
+    --brand-color: v-bind(brandColor);
+    --brand-color-light: v-bind(getLighterShade(brandColor));
+    --brand-color-dark: v-bind(getDarkerShade(brandColor));
+  }
+  
+  .active-link {
+    color: var(--brand-color);
+    font-weight: 500;
+  }
+  
+  .active-link-mobile {
+    color: var(--brand-color);
+    background-color: var(--brand-color-light);
+  }
+  
+  a:hover {
+    color: var(--brand-color);
+  }
+  
+  button:focus, input:focus {
+    --tw-ring-color: var(--brand-color);
+  }
