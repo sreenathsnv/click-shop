@@ -15,7 +15,12 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { AuthInterceptor } from './auth/interceptors/auth.interceptor';
 import { NavlayoutComponent } from './layout/nav/navlayout/navlayout.component';
 import { BlanklayoutComponent } from './layout/blank/blanklayout/blanklayout.component';
-
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
+import { CommonModule } from '@angular/common';
+import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { FormsModule } from '@angular/forms';
+import { UpdateUserDetailsComponent } from './components/admin/update-user-details/update-user-details.component';
+import { UserDetailsPipePipe } from './components/admin/update-user-details/user-details-pipe.pipe';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,11 @@ import { BlanklayoutComponent } from './layout/blank/blanklayout/blanklayout.com
     LoginComponent,
     NavlayoutComponent,
     BlanklayoutComponent,
+    AdminLayoutComponent,
+    UserManagementComponent,
+    UpdateUserDetailsComponent,
+    UserDetailsPipePipe
+    
   ],
   imports: [
     BrowserModule,
@@ -34,6 +44,8 @@ import { BlanklayoutComponent } from './layout/blank/blanklayout/blanklayout.com
     BrowserAnimationsModule,
     HttpClientModule,
     ReactiveFormsModule,
+    CommonModule,
+    FormsModule
   ],
   providers: [
     provideClientHydration(withEventReplay()),

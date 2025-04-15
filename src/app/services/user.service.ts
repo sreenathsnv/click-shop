@@ -2,13 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { User } from '../auth/models/user.model';
 
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  role: string;
-}
+
 
 @Injectable({
   providedIn: 'root'
@@ -17,12 +13,12 @@ export class UserService {
   getUser(arg0: string) {
     throw new Error('Method not implemented.');
   }
-  private apiUrl = 'http://localhost:8185/api/users';
+  private apiUrl = 'http://localhost:8183/api/auth';
 
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(this.apiUrl).pipe(
+    return this.http.get<User[]>(`${this.apiUrl}/all-users`).pipe(
       map((data) => data),
       catchError(this.handleError)
     );
@@ -47,9 +43,10 @@ export class UserService {
   }
 
   updateUser(user: User): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/${user.id}`, user).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.put<User>(`${this.apiUrl}/profile`, user);
+  }
+  updateUserByAdmin(user: User): Observable<User> {
+    return this.http.put<User>(`${this.apiUrl}/users/${user.username}/update`, user);
   }
 
   private handleError(error: HttpErrorResponse) {

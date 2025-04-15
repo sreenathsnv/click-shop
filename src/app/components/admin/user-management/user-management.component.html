@@ -1,0 +1,161 @@
+<div class="bg-white p-6 md:p-8 rounded-2xl shadow-xl">
+  <div class="flex items-center justify-between mb-8">
+    <h2 class="text-3xl font-bold text-gray-800 flex items-center">
+      <span class="inline-block w-2 h-8 bg-[#FFA725] rounded-full mr-3"></span>
+      User Management
+    </h2>
+    <div class="bg-[#FFA725] bg-opacity-10 px-4 py-2 rounded-full">
+      <span class="text-sm font-medium text-[#ffffff]">Dashboard</span>
+    </div>
+  </div>
+
+  <!-- Search bar -->
+  <div class="mb-8">
+    <div class="relative">
+      <div class="absolute inset-y-0 left-0 flex items-center pl-4 pointer-events-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+      <input
+        type="text"
+        placeholder="Search users by name..."
+        [(ngModel)]="searchQuery"
+        class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
+      />
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- User List -->
+    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-xl font-semibold text-gray-800 flex items-center">
+          <span class="inline-block w-1 h-5 bg-[#FFA725] rounded-full mr-2"></span>
+          Users
+        </h3>
+        <span class="bg-[#FFA725] text-white text-xs font-medium px-3 py-1 rounded-full">
+          {{ filteredUsers().length }} Found
+        </span>
+      </div>
+      
+      <div class="overflow-y-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pr-2">
+        <ul class="space-y-2">
+          <li
+            *ngFor="let user of filteredUsers()"
+            (click)="viewUser(user)"
+            class="p-4 bg-gray-50 hover:bg-[#FFF2E1] cursor-pointer rounded-lg border border-gray-200 transition-all duration-200 flex items-center"
+            [ngClass]="{'ring-2 ring-[#FFA725] bg-[#FFF2E1] border-[#FFA725]/30': selectedUser && selectedUser.id === user.id}"
+          >
+            <div class="flex-shrink-0 w-10 h-10 bg-[#FFA725] bg-opacity-20 rounded-full flex items-center justify-center mr-3">
+              <span class="text-[#FFA725] font-medium">{{ (user.username || 'User').charAt(0).toUpperCase() }}</span>
+            </div>
+            <div>
+              <div class="font-medium">{{ user.username || 'User ' + user.id }}</div>
+              <div class="text-sm text-gray-500">{{ user.email || 'N/A' }}</div>
+            </div>
+          </li>
+        </ul>
+        <div *ngIf="filteredUsers().length === 0" class="text-center py-8">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-300 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-gray-500">
+            No users found matching "<strong>{{ searchQuery }}</strong>".
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Details -->
+    <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100">
+      <h3 class="text-xl font-semibold text-gray-800 flex items-center mb-4">
+        <span class="inline-block w-1 h-5 bg-[#FFA725] rounded-full mr-2"></span>
+        User Details
+      </h3>
+      
+      <div *ngIf="selectedUser; else noUser">
+        <div class="mb-4 p-4 bg-[#FFF2E1] rounded-lg border border-[#FFA725]/30">
+          <div class="flex items-center mb-4">
+            <div class="w-12 h-12 bg-[#FFA725] rounded-full flex items-center justify-center mr-3">
+              <span class="text-white text-lg font-semibold">{{ selectedUser.username?.charAt(0).toUpperCase() || 'U' }}</span>
+            </div>
+            <div>
+              <h4 class="text-lg font-semibold">{{ selectedUser.username || 'User ' + selectedUser.id }}</h4>
+              <p class="text-sm text-gray-600">{{ selectedUser.role || 'User' }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">User ID</p>
+            <p class="font-medium">{{ selectedUser.id }}</p>
+          </div>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">Email</p>
+            <p class="font-medium">{{ selectedUser.email || 'N/A' }}</p>
+          </div>
+        </div>
+        
+        <h4 class="text-lg font-medium text-gray-800 mt-6 mb-3">Address Information</h4>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">House Name</p>
+            <p class="font-medium">{{ selectedUser.houseName || 'N/A' }}</p>
+          </div>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">Street</p>
+            <p class="font-medium">{{ selectedUser.street || 'N/A' }}</p>
+          </div>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">District</p>
+            <p class="font-medium">{{ selectedUser.district || 'N/A' }}</p>
+          </div>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">State</p>
+            <p class="font-medium">{{ selectedUser.state || 'N/A' }}</p>
+          </div>
+          
+          <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <p class="text-xs text-gray-500 mb-1">Zipcode</p>
+            <p class="font-medium">{{ selectedUser.zipcode || 'N/A' }}</p>
+          </div>
+        </div>
+        
+        <div class="mt-6 flex justify-end space-x-3">
+          <!-- <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-200" [routerLink]="['/admin/dashboard/users/update']">
+            <span class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+              </svg>
+            </span>
+            Edit
+          </button> -->
+          <button class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-all duration-200">
+            <span class="flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Delete
+            </span>
+          </button>
+        </div>
+      </div>
+      
+      <ng-template #noUser>
+        <div class="flex flex-col items-center justify-center py-12">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-gray-500 text-center">Select a user from the list<br>to view their details.</p>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

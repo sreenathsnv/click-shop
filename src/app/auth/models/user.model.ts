@@ -1,10 +1,15 @@
 export interface User {
-    id: Number;
-    email: string;
-    username: string;
-    role: string;
-  }
-  
-  export interface AuthResponse {
-    token: string;
-  }
+  id: number;
+  email: string;
+  username: string;
+  role: string;
+  houseName?: string;
+  street?: string;
+  district?: string;
+  state?: string;
+  zipcode?: string;
+}
+
+export interface AuthResponse {
+  token: string;
+}

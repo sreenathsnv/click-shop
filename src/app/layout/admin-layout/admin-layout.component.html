@@ -1,19 +1,65 @@
 <div class="flex h-screen">
-    <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 text-white p-4">
-      <h2 class="text-xl font-bold mb-4">Admin Panel</h2>
-      <ul class="space-y-2">
-        <li><a routerLink="dashboard" routerLinkActive="font-bold">Dashboard</a></li>
-        <li><a routerLink="users" routerLinkActive="font-bold">User Management</a></li>
-        <li><a routerLink="products" routerLinkActive="font-bold">Product Management</a></li>
-        <li><a routerLink="orders" routerLinkActive="font-bold">Order Management</a></li>
-        <li><button (click)="logout()" class="text-red-400">Logout</button></li>
-      </ul>
-    </div>
-  
-    <!-- Main content -->
-    <div class="flex-1 bg-gray-100 p-6 overflow-auto">
-      <router-outlet></router-outlet>
-    </div>
+  <!-- Sidebar -->
+  <div class="w-64 bg-gray-800 text-white p-4">
+    <h2 class="text-xl font-bold mb-4">Admin Panel</h2>
+    <ul class="space-y-2">
+
+      <!-- Dashboard -->
+      <li>
+        <a routerLink="dashboard" routerLinkActive="font-bold">Dashboard</a>
+      </li>
+
+      <!-- User Management -->
+      <li>
+        <button (click)="toggleSection('users')" class="w-full flex justify-between items-center text-left">
+          <span>User Management</span>
+          <svg [ngClass]="{'rotate-90': sections.users}" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        <ul *ngIf="sections.users" class="ml-4 mt-1 space-y-1 text-sm text-gray-300 transition-all duration-300 ease-in-out">
+          <li><a routerLink="users/view" routerLinkActive="font-bold">View Users</a></li>
+          <li><a routerLink="users/update" routerLinkActive="font-bold">Update User Details</a></li>
+        </ul>
+      </li>
+
+      <!-- Product Management -->
+      <li>
+        <button (click)="toggleSection('products')" class="w-full flex justify-between items-center text-left">
+          <span>Product Management</span>
+          <svg [ngClass]="{'rotate-90': sections.products}" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        <ul *ngIf="sections.products" class="ml-4 mt-1 space-y-1 text-sm text-gray-300 transition-all duration-300 ease-in-out">
+          <li><a routerLink="products/list" routerLinkActive="font-bold">View Products</a></li>
+          <li><a routerLink="products/create" routerLinkActive="font-bold">Add Product</a></li>
+        </ul>
+      </li>
+
+      <!-- Order Management -->
+      <li>
+        <button (click)="toggleSection('orders')" class="w-full flex justify-between items-center text-left">
+          <span>Order Management</span>
+          <svg [ngClass]="{'rotate-90': sections.orders}" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+        <ul *ngIf="sections.orders" class="ml-4 mt-1 space-y-1 text-sm text-gray-300 transition-all duration-300 ease-in-out">
+          <li><a routerLink="orders/list" routerLinkActive="font-bold">View Orders</a></li>
+          <li><a routerLink="orders/track" routerLinkActive="font-bold">Track Order</a></li>
+        </ul>
+      </li>
+
+      <!-- Logout -->
+      <li>
+        <button (click)="logout()" class="text-red-400">Logout</button>
+      </li>
+    </ul>
   </div>
-  
+
+  <!-- Main content -->
+  <div class="flex-1 bg-gray-100 p-6 overflow-auto">
+    <router-outlet></router-outlet>
+  </div>
+</div>

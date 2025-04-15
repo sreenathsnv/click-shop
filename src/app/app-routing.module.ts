@@ -1,3 +1,4 @@
+// src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/guards/auth.guard';
@@ -7,6 +8,10 @@ import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { NavlayoutComponent } from './layout/nav/navlayout/navlayout.component';
 import { BlanklayoutComponent } from './layout/blank/blanklayout/blanklayout.component';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
+import { UserManagementComponent } from './components/admin/user-management/user-management.component';
+import { UpdateUserDetailsComponent } from './components/admin/update-user-details/update-user-details.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -15,14 +20,14 @@ const routes: Routes = [
       {
         path: 'home',
         component: HomeComponent,
-        canActivate: [AuthGuard]
+        canActivate: [AuthGuard],
       },
       {
         path: '',
         component: HomeComponent,
-        pathMatch: 'full'
-      }
-    ]
+        pathMatch: 'full',
+      },
+    ],
   },
   {
     path: 'auth',
@@ -30,30 +35,55 @@ const routes: Routes = [
     children: [
       {
         path: 'login',
-        component: LoginComponent
+        component: LoginComponent,
       },
       {
         path: 'signup',
-        component: SignupComponent
-      }
-    ]
+        component: SignupComponent,
+      },
+    ],
+  },
+  {
+    path: 'admin/dashboard',
+    component: AdminLayoutComponent,
+    canActivate: [AuthGuard, RoleGuard],
+    data: { roles: ['ADMIN'] },
+    children: [
+      { path: '', redirectTo: 'users/view', pathMatch: 'full' },
+      {
+        path: 'users/view',
+        component: UserManagementComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'users/update',
+        component: UpdateUserDetailsComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      // {
+      //   path: 'products',
+      //   component: ProductManagementComponent,
+      //   canActivate: [AuthGuard, RoleGuard],
+      //   data: { roles: ['ADMIN'] },
+      // },
+      // {
+      //   path: 'orders',
+      //   component: OrderManagementComponent,
+      //   canActivate: [AuthGuard, RoleGuard],
+      //   data: { roles: ['ADMIN'] },
+      // },
+    ],
   },
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];
-// const routes: Routes = [
-//   { path: '', component: HomeComponent },
-//   { path: 'products', component: HomeComponent }, // Replace with actual component when ready
-//   { path: 'cart', component: HomeComponent }, // Replace with actual component when ready
-//   { path: 'profile', component: HomeComponent }, // Replace with actual component when ready
-//   { path: 'login', component: HomeComponent }, // Replace with actual component when ready
-//   { path: 'signup', component: HomeComponent }, // Replace with actual component when ready
-// ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
