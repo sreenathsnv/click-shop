@@ -13,12 +13,17 @@ export class NavbarComponent {
   isMenuOpen = false;
   brandColor = '#FFA725';
   isLoggedIn:boolean;
+  userRole:string  = "";
+  cartItemCount:number=0;
 
   constructor(private authService:AuthService,
     private cookieService: CookieService,
     private router: Router
   ){
     this.isLoggedIn = this.authService.isLoggedIn();
+    authService.getUserDetails().subscribe(data=>
+      this.userRole = data.role
+    )
   }
 
   toggleMenu() {
