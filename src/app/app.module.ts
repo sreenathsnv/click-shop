@@ -26,6 +26,8 @@ import { ProductViewConsoleComponent } from './components/admin/product/product-
 import { ProductAddConsoleComponent } from './components/admin/product/product-add-console/product-add-console.component';
 import { ProductUpdateConsoleComponent } from './components/admin/product/product-update-console/product-update-console.component';
 import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
+import { DashboardConsoleComponent } from './components/admin/dashboard-console/dashboard-console.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import { OrderViewConsoleComponent } from './components/admin/order/order-view-c
     ProductViewConsoleComponent,
     ProductAddConsoleComponent,
     ProductUpdateConsoleComponent,
-    OrderViewConsoleComponent
+    OrderViewConsoleComponent,
+    DashboardConsoleComponent
     
   ],
   imports: [
@@ -61,6 +64,7 @@ import { OrderViewConsoleComponent } from './components/admin/order/order-view-c
       closeButton: true,
       progressBar: true,
     }),
+    NgApexchartsModule,
   ],
   providers: [
     provideClientHydration(withEventReplay()),

@@ -15,6 +15,7 @@ import { ProductViewConsoleComponent } from './components/admin/product/product-
 import { ProductAddConsoleComponent } from './components/admin/product/product-add-console/product-add-console.component';
 import { ProductUpdateConsoleComponent } from './components/admin/product/product-update-console/product-update-console.component';
 import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
+import { DashboardConsoleComponent } from './components/admin/dashboard-console/dashboard-console.component';
 
 const routes: Routes = [
   {
@@ -53,10 +54,9 @@ const routes: Routes = [
     canActivate: [AuthGuard, RoleGuard],
     data: { roles: ['ADMIN'] },
     children: [
-      { path: '', redirectTo: 'users/view', pathMatch: 'full' },
       {
-        path: 'users/view',
-        component: UserManagementComponent,
+        path: '',
+        component: DashboardConsoleComponent,
         canActivate: [AuthGuard, RoleGuard],
         data: { roles: ['ADMIN'] },
       },
@@ -90,6 +90,7 @@ const routes: Routes = [
         canActivate: [AuthGuard, RoleGuard],
         data: { roles: ['ADMIN'] },
       },
+     
       // {
       //   path: 'products',
       //   component: ProductManagementComponent,
