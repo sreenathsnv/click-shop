@@ -26,7 +26,8 @@ export class UserManagementComponent implements OnInit {
   filteredUsers() {
     if (!this.searchQuery) return this.users;
     return this.users.filter(user =>
-      user.username?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      user.username?.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+      user.role?.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
   

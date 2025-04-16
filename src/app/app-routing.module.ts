@@ -61,6 +61,13 @@ const routes: Routes = [
         data: { roles: ['ADMIN'] },
       },
       {
+        path: 'users/view',
+        component: UserManagementComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+
+      {
         path: 'users/update',
         component: UpdateUserDetailsComponent,
         canActivate: [AuthGuard, RoleGuard],

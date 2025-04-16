@@ -40,7 +40,8 @@ export class ProductViewConsoleComponent implements OnInit {
 
     if (this.searchText) {
       result = result.filter(p =>
-        p.name.toLowerCase().includes(this.searchText.toLowerCase())
+        p.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
+        p.description.toLowerCase().includes(this.searchText.toLowerCase())
       );
     }
 
