@@ -2,14 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { Order } from '../models/order.model';
 
-export interface Order {
-  id: number;
-  customerName: string;
-  productList: string[];
-  totalAmount: number;
-  orderDate: string;
-}
 
 export interface OrderStats {
   totalOrders: number;
@@ -21,12 +15,18 @@ export interface OrderStats {
   providedIn: 'root'
 })
 export class OrderService {
-  private apiUrl = 'http://localhost:8185/api/orders';
+  private apiUrl = 'http://localhost:8188/api/orders';
 
   constructor(private http: HttpClient) {}
 
   getOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(this.apiUrl).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  getOrdersAdmin(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/admin/orders`).pipe(
       catchError(this.handleError)
     );
   }

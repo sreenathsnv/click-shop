@@ -11,6 +11,10 @@ import { BlanklayoutComponent } from './layout/blank/blanklayout/blanklayout.com
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 import { UserManagementComponent } from './components/admin/user-management/user-management.component';
 import { UpdateUserDetailsComponent } from './components/admin/update-user-details/update-user-details.component';
+import { ProductViewConsoleComponent } from './components/admin/product/product-view-console/product-view-console.component';
+import { ProductAddConsoleComponent } from './components/admin/product/product-add-console/product-add-console.component';
+import { ProductUpdateConsoleComponent } from './components/admin/product/product-update-console/product-update-console.component';
+import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
 
 const routes: Routes = [
   {
@@ -59,6 +63,30 @@ const routes: Routes = [
       {
         path: 'users/update',
         component: UpdateUserDetailsComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'products/view',
+        component: ProductViewConsoleComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+        {
+        path: 'products/add',
+        component: ProductAddConsoleComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+       {
+        path: 'product/:id/update',
+        component: ProductUpdateConsoleComponent,
+        canActivate: [AuthGuard, RoleGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'orders/view',
+        component: OrderViewConsoleComponent,
         canActivate: [AuthGuard, RoleGuard],
         data: { roles: ['ADMIN'] },
       },

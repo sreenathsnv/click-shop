@@ -1,0 +1,87 @@
+<div class="p-6 md:p-8 max-w-2xl mx-auto bg-white rounded-2xl shadow-lg">
+    <h2 class="text-2xl font-bold mb-8 text-center text-gray-800">Update Product</h2>
+  
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" novalidate>
+      <!-- Name -->
+      <div class="mb-6">
+        <label for="name" class="block mb-2 font-medium text-gray-800">Name</label>
+        <input
+          id="name"
+          formControlName="name"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
+          [ngClass]="{ 'ring-1 ring-red-200': submitted && f['name'].errors }"
+          type="text"
+          placeholder="Product name"
+        />
+        <div *ngIf="submitted && f['name']?.errors" class="text-red-500 text-sm mt-1">
+          Product name is required.
+        </div>
+      </div>
+  
+      <!-- Description -->
+      <div class="mb-6">
+        <label for="description" class="block mb-2 font-medium text-gray-800">Description</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
+          rows="3"
+          placeholder="Enter product description"
+        ></textarea>
+      </div>
+  
+      <!-- Price -->
+      <div class="mb-6">
+        <label for="price" class="block mb-2 font-medium text-gray-800">Price (₹)</label>
+        <input
+          id="price"
+          type="number"
+          formControlName="price"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
+          [ngClass]="{ 'ring-1 ring-red-200': submitted && f['price'].errors }"
+          placeholder="0.00"
+        />
+        <div *ngIf="submitted && f['price']?.errors" class="text-red-500 text-sm mt-1">
+          Price is required and must be ≥ 0.
+        </div>
+      </div>
+  
+      <!-- Quantity -->
+      <div class="mb-6">
+        <label for="quantity" class="block mb-2 font-medium text-gray-800">Quantity</label>
+        <input
+          id="quantity"
+          type="number"
+          formControlName="quantity"
+          class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
+          [ngClass]="{ 'ring-1 ring-red-200': submitted && f['quantity'].errors }"
+          placeholder="0"
+        />
+        <div *ngIf="submitted && f['quantity']?.errors" class="text-red-500 text-sm mt-1">
+          Quantity is required and must be ≥ 0.
+        </div>
+      </div>
+  
+      <!-- Available Checkbox -->
+      <div class="mb-6 flex items-center gap-3">
+        <input
+          type="checkbox"
+          formControlName="available"
+          id="available"
+          class="accent-[#FFA725] w-4 h-4 rounded focus:ring-2 focus:ring-[#FFA725]"
+          [disabled]="true"
+        />
+        <label for="available" class="font-medium text-sm text-gray-800">Available</label>
+      </div>
+  
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="w-full bg-gradient-to-r from-amber-400 to-[#FFA725] hover:from-amber-500 hover:to-[#FF9500] text-white font-medium py-3 px-5 rounded-lg shadow-md hover:shadow-lg transition-all"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Updating...' : 'Update Product' }}
+      </button>
+    </form>
+  </div>
+  

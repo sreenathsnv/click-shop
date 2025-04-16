@@ -2,24 +2,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap } from 'rxjs/operators';
+import { Product } from '../models/product.model';
 
-// Define the product interface
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-}
 
 @Injectable({
-  providedIn: 'root' // Makes the service available app-wide
+  providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8185/api/products'; 
 
+  private apiUrl = 'http://localhost:8185/api/products'; 
+  
   constructor(private http: HttpClient) {}
 
+
+  addProduct(product: Product): Observable<any> {
+    return this.http.post(`${this.apiUrl}`, product);
+  }
+  
+    // Fetch product by ID
+    getProductById(id: string): Observable<any> {
+      return this.http.get<any>(`${this.apiUrl}/${id}`);
+    }
+  
+    // Update product
+    updateProduct(product: any): Observable<any> {
+      return this.http.put<any>(`${this.apiUrl}/${product.id}`, product);
+    }
+    deleteProduct(id: string): Observable<any> {
+      return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+        tap(() => console.log(`Product with ID ${id} deleted`)),
+        catchError(this.handleError)
+      );
+    }
   // Fetch products from the API
   getProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl).pipe(

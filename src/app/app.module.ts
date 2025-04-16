@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
+import { ToastrModule } from 'ngx-toastr';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -21,6 +22,10 @@ import { UserManagementComponent } from './components/admin/user-management/user
 import { FormsModule } from '@angular/forms';
 import { UpdateUserDetailsComponent } from './components/admin/update-user-details/update-user-details.component';
 import { UserDetailsPipePipe } from './components/admin/update-user-details/user-details-pipe.pipe';
+import { ProductViewConsoleComponent } from './components/admin/product/product-view-console/product-view-console.component';
+import { ProductAddConsoleComponent } from './components/admin/product/product-add-console/product-add-console.component';
+import { ProductUpdateConsoleComponent } from './components/admin/product/product-update-console/product-update-console.component';
+import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,11 @@ import { UserDetailsPipePipe } from './components/admin/update-user-details/user
     AdminLayoutComponent,
     UserManagementComponent,
     UpdateUserDetailsComponent,
-    UserDetailsPipePipe
+    UserDetailsPipePipe,
+    ProductViewConsoleComponent,
+    ProductAddConsoleComponent,
+    ProductUpdateConsoleComponent,
+    OrderViewConsoleComponent
     
   ],
   imports: [
@@ -45,7 +54,13 @@ import { UserDetailsPipePipe } from './components/admin/update-user-details/user
     HttpClientModule,
     ReactiveFormsModule,
     CommonModule,
-    FormsModule
+    FormsModule,
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right', 
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
+    }),
   ],
   providers: [
     provideClientHydration(withEventReplay()),

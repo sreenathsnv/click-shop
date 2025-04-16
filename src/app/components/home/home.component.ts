@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component,OnDestroy,OnInit  } from '@angular/core';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { Product, ProductService } from '../../services/product.service';
+import {ProductService } from '../../services/product.service';
+import { Product } from '../../models/product.model';
 @Component({
   selector: 'app-home',
   standalone: false,
