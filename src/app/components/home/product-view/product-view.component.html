@@ -1,0 +1,189 @@
+<div class="min-h-screen bg-gray-50">
+    <!-- Breadcrumb Navigation -->
+    <div class="container mx-auto px-4 py-4 text-sm">
+      <nav class="flex" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+            <a routerLink="/" class="text-gray-600 hover:text-teal-600 transition-colors">Home</a>
+          </li>
+          <li aria-current="page">
+            <div class="flex items-center">
+              <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+              </svg>
+              <span class="text-gray-500 ml-1 md:ml-2 truncate max-w-xs">{{ product?.name }}</span>
+            </div>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center h-96">
+      <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-teal-600"></div>
+    </div>
+  
+    <!-- Error State -->
+    <div *ngIf="error" class="container mx-auto px-4 py-8">
+      <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-md">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-red-700">{{ error }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Product Detail -->
+    <div *ngIf="product && !loading" class="container mx-auto px-4 py-8">
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="flex flex-col lg:flex-row">
+          <!-- Product Gallery -->
+          <div class="lg:w-1/2 p-6">
+            <div class="relative h-96 rounded-lg overflow-hidden bg-gray-100 mb-4">
+              <img [src]="product.imageURL" [alt]="product.name" class="w-full h-full object-contain">
+            </div>
+          </div>
+          
+          <!-- Product Info -->
+          <div class="lg:w-1/2 p-6 lg:p-8 flex flex-col">
+            <div class="mb-auto">
+              <!-- Product Name -->
+              <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+              
+              <!-- Price Section -->
+              <div class="flex items-center mb-4">
+                <span class="text-3xl font-bold text-gray-900">₹{{ product.price }}</span>
+              </div>
+              
+              <!-- Availability -->
+              <div class="flex items-center mb-6">
+                <div class="flex items-center mr-4">
+                  <span [ngClass]="product.available ? 'bg-green-500' : 'bg-red-500'" class="inline-block w-3 h-3 rounded-full mr-2"></span>
+                  <span class="text-sm text-gray-700">{{ product.available ? 'In Stock' : 'Out of Stock' }}</span>
+                </div>
+                <div *ngIf="product.available && product.quantity" class="text-sm text-gray-600">
+                  Only {{ product.quantity }} left
+                </div>
+              </div>
+              
+              <!-- Product Description -->
+              <div class="prose prose-sm text-gray-700 mb-6">
+                <p>{{ product.description }}</p>
+              </div>
+            </div>
+            
+            <!-- Quantity and Add to Cart -->
+            <div class="pt-6 mt-6 border-t border-gray-200">
+              <div class="flex flex-col sm:flex-row items-center gap-4">
+                <!-- Quantity Selector -->
+                <div class="flex items-center border border-gray-300 rounded-md">
+                  <button (click)="updateQuantity(-1)" [disabled]="quantity <= 1" class="p-2 text-gray-600 hover:text-teal-600 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path>
+                    </svg>
+                  </button>
+                  <span class="w-12 text-center font-medium text-gray-900">{{ quantity }}</span>
+                  <button (click)="updateQuantity(1)" [disabled]="quantity >= product.quantity" class="p-2 text-gray-600 hover:text-teal-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                    </svg>
+                  </button>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="flex-1 grid grid-cols-2 gap-4">
+                  <button (click)="addToCart()" [disabled]="!product.available" class="inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    </svg>
+                    Add to Cart
+                  </button>
+                  <button (click)="buyNow()" [disabled]="!product.available" class="inline-flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-orange-500 hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                    </svg>
+                    Buy Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Product Details Tabs -->
+        <div class="border-t border-gray-200">
+          <div class="sm:px-6 lg:px-8">
+            <!-- Tab Buttons -->
+            <div class="border-b border-gray-200">
+              <nav class="flex -mb-px space-x-8" aria-label="Tabs">
+                <button 
+                  *ngFor="let tab of productTabs" 
+                  (click)="activeTab = tab.id"
+                  [ngClass]="activeTab === tab.id ? 'border-teal-500 text-teal-600' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'"
+                  class="py-4 px-1 border-b-2 font-medium text-sm">
+                  {{ tab.name }}
+                </button>
+              </nav>
+            </div>
+            
+            <!-- Tab Content -->
+            <div class="py-6">
+              <!-- Description Tab -->
+              <div *ngIf="activeTab === 'description'" class="prose max-w-none text-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Product Description</h3>
+                <p>{{ product.description }}</p>
+                <p class="mt-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa libero labore natus atque, ducimus sed.</p>
+                <h4 class="mt-4 text-base font-medium text-gray-900">Key Features:</h4>
+                <ul class="list-disc pl-5 mt-2">
+                  <li>High quality materials</li>
+                  <li>Durable construction</li>
+                  <li>Versatile application</li>
+                </ul>
+              </div>
+              
+              <!-- Specifications Tab -->
+              <div *ngIf="activeTab === 'specifications'" class="text-gray-700">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Product Specifications</h3>
+                <div class="border rounded-lg overflow-hidden">
+                  <div *ngFor="let spec of productSpecifications; let i = index" [ngClass]="i % 2 === 0 ? 'bg-gray-50' : 'bg-white'" class="grid grid-cols-3 p-4 border-b last:border-b-0">
+                    <div class="font-medium">{{ spec.name }}</div>
+                    <div class="col-span-2">{{ spec.value }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Related Products -->
+      <div class="mt-16">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">You May Also Like</h2>
+      
+        <div *ngIf="relatedProducts.length > 0; else noRelated" class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div *ngFor="let relatedProduct of relatedProducts" class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+            <a [routerLink]="['/product', relatedProduct.id]">
+              <div (click)="viewRelatedProduct(relatedProduct.id)" class="h-48 bg-gray-200">
+                <img [src]="relatedProduct.imageURL" [alt]="relatedProduct.name" class="w-full h-full object-cover">
+              </div>
+              <div class="p-4">
+                <h3 class="font-medium text-gray-900 mb-1">{{ relatedProduct.name }}</h3>
+                <p class="text-teal-600 font-medium">₹{{ relatedProduct.price }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      
+        <ng-template #noRelated>
+          <p class="text-gray-600">No related products available.</p>
+        </ng-template>
+      </div>
+      
+    </div>
+  </div>

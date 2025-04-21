@@ -25,15 +25,24 @@ export class SignupComponent implements OnInit {
 
   initForm(): void {
     this.signupForm = this.fb.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', [Validators.required]]
-    }, { 
+      confirmPassword: ['', [Validators.required]],
+  
+      // Address fields
+      houseName: ['', [Validators.required]],
+      street: ['', [Validators.required]],
+      district: ['', [Validators.required]],
+      state: ['', [Validators.required]],
+      zipcode: ['', [Validators.required]],
+  
+     
+    }, {
       validators: this.passwordMatchValidator
     });
   }
+  
 
   passwordMatchValidator(formGroup: FormGroup) {
     const password = formGroup.get('password')?.value;
@@ -43,21 +52,16 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.signupForm.invalid) {
-      return;
-    }
-
+    if (this.signupForm.invalid) return;
+  
     this.isSubmitting = true;
     this.errorMessage = '';
-
+  
     const { confirmPassword, ...userData } = this.signupForm.value;
-    
+  
     this.authService.signup(userData).subscribe({
       next: () => {
-        // On successful registration, navigate to login page
-        this.router.navigate(['/auth/login'], { 
-          queryParams: { registered: 'success' } 
-        });
+        this.router.navigate(['/auth/login'], { queryParams: { registered: 'success' } });
       },
       error: (error) => {
         this.isSubmitting = false;
@@ -65,4 +69,5 @@ export class SignupComponent implements OnInit {
       }
     });
   }
+  
 }

@@ -1,0 +1,262 @@
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">Account Dashboard</h1>
+        <p class="mt-2 text-gray-600">Manage your profile information, orders and cart</p>
+      </div>
+      
+      <!-- Profile Information -->
+      <div *ngIf="user" class="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+        <div class="px-6 py-5 border-b border-gray-100">
+          <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-gray-800">Profile Information</h2>
+            <div class="flex space-x-3">
+              <button (click)="enableEdit()" 
+                      class="px-4 py-2 bg-[#FFA725] hover:bg-[#F09000] text-white rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:ring-offset-2">
+                Edit Profile
+              </button>
+              <button (click)="togglePasswordReset()" 
+                      class="px-4 py-2 border border-[#FFA725] text-[#FFA725] hover:bg-orange-50 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:ring-offset-2">
+                Reset Password
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div class="mb-6">
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Account</h3>
+                <div class="space-y-3">
+                  <div>
+                    <span class="block text-sm text-gray-500">Email</span>
+                    <span class="block text-base font-medium text-gray-900 mt-1">{{ user.email }}</span>
+                  </div>
+                  <div>
+                    <span class="block text-sm text-gray-500">Username</span>
+                    <span class="block text-base font-medium text-gray-900 mt-1">{{ user.username }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div>
+              <div>
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Shipping Address</h3>
+                <address class="not-italic text-base text-gray-900 leading-relaxed">
+                  {{ user.houseName }}<br>
+                  {{ user.street }}<br>
+                  {{ user.district }}, {{ user.state }} {{ user.zipcode }}
+                </address>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Edit Profile Form -->
+      <div *ngIf="editing" class="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+        <div class="px-6 py-5 border-b border-gray-100">
+          <h2 class="text-xl font-semibold text-gray-800">Edit Profile</h2>
+        </div>
+        
+        <div class="p-6">
+          <form (ngSubmit)="updateUser()">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <input [(ngModel)]="user.email" name="email" id="email" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" required />
+              </div>
+              
+              <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
+                <input 
+                  type="text"
+                  id="username"
+                  name="username"
+                  [disabled]="true"
+                  [(ngModel)]="user.username"
+                  class="block w-full px-4 py-3 rounded-lg border border-gray-300 shadow-sm focus:ring-[#FFA725] focus:border-[#FFA725] bg-gray-100 cursor-not-allowed"
+                  title="Username cannot be edited"
+                  required
+                />
+              </div>
+              
+              
+              <div>
+                <label for="houseName" class="block text-sm font-medium text-gray-700 mb-1">House Name</label>
+                <input [(ngModel)]="user.houseName" name="houseName" id="houseName" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" />
+              </div>
+              
+              <div>
+                <label for="street" class="block text-sm font-medium text-gray-700 mb-1">Street</label>
+                <input [(ngModel)]="user.street" name="street" id="street" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" />
+              </div>
+              
+              <div>
+                <label for="district" class="block text-sm font-medium text-gray-700 mb-1">District</label>
+                <input [(ngModel)]="user.district" name="district" id="district" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" />
+              </div>
+              
+              <div>
+                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">State</label>
+                <input [(ngModel)]="user.state" name="state" id="state" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" />
+              </div>
+              
+              <div>
+                <label for="zipcode" class="block text-sm font-medium text-gray-700 mb-1">Zipcode</label>
+                <input [(ngModel)]="user.zipcode" name="zipcode" id="zipcode" 
+                       class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" />
+              </div>
+            </div>
+            
+            <div class="mt-8 flex space-x-3">
+              <button type="submit" 
+                      class="px-6 py-3 bg-[#FFA725] hover:bg-[#F09000] text-white rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:ring-offset-2">
+                Save Changes
+              </button>
+              <button type="button" (click)="cancelEdit()" 
+                      class="px-6 py-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Password Reset Form -->
+      <div *ngIf="showPasswordReset" class="bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+        <div class="px-6 py-5 border-b border-gray-100">
+          <h2 class="text-xl font-semibold text-gray-800">Reset Password</h2>
+        </div>
+        
+        <div class="p-6">
+          <form (ngSubmit)="resetPassword()" class="max-w-md">
+            <div>
+              <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+              <input [(ngModel)]="newPassword" name="newPassword" id="newPassword" type="password" 
+                     class="block w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-[#FFA725] focus:border-[#FFA725] shadow-sm" required />
+            </div>
+            
+            <div class="mt-6 flex space-x-3">
+              <button type="submit" 
+                      class="px-6 py-3 bg-[#FFA725] hover:bg-[#F09000] text-white rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:ring-offset-2">
+                Update Password
+              </button>
+              <button type="button" (click)="togglePasswordReset()" 
+                      class="px-6 py-3 bg-white border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Orders Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div class="px-6 py-5 border-b border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-800">Your Orders</h2>
+          </div>
+          
+          <div class="p-6">
+            <div *ngIf="orders.length; else noOrders">
+              <ul class="divide-y divide-gray-100">
+                <li *ngFor="let order of orders" class="py-4 flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#FFA725]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                      </svg>
+                    </div>
+                    <span class="font-medium">Order #{{ order.id }}</span>
+                  </div>
+                  <span 
+                    class="px-3 py-1 text-xs rounded-full" 
+                    [ngClass]="{
+                      'bg-green-100 text-green-800': order.status === 'Completed',
+                      'bg-orange-100 text-orange-800': order.status === 'Processing',
+                      'bg-red-100 text-red-800': order.status === 'Cancelled'
+                    }">
+                    {{ order.status }}
+                  </span>
+                </li>
+              </ul>
+            </div>
+            
+            <ng-template #noOrders>
+              <div class="py-8 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                </div>
+                <p class="text-gray-500">No orders found.</p>
+                <a href="#" class="mt-3 text-sm font-medium text-[#FFA725] hover:text-[#F09000]">Browse Products</a>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        
+        <!-- Cart Section -->
+        <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+          <div class="px-6 py-5 border-b border-gray-100">
+            <h2 class="text-xl font-semibold text-gray-800">Your Cart</h2>
+          </div>
+          
+          <div class="p-6">
+            <div *ngIf="cartItems.length; else emptyCart">
+              <ul class="divide-y divide-gray-100 mb-6">
+                <li *ngFor="let item of cartItems" class="py-4 flex items-center justify-between">
+                  <div class="flex items-center">
+                    <div class="w-12 h-12 rounded bg-gray-100 flex items-center justify-center mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p class="font-medium text-gray-900">{{ item.productName }}</p>
+                      <p class="text-sm text-gray-500">Quantity: {{ item.quantity }}</p>
+                    </div>
+                  </div>
+                  <button class="text-gray-400 hover:text-red-500 transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                  </button>
+                </li>
+              </ul>
+              
+              <div class="flex justify-between items-center pt-4 border-t border-gray-100">
+                <span class="font-medium">Total ({{ cartItems.length }} items)</span>
+                <button class="px-6 py-2 bg-[#FFA725] hover:bg-[#F09000] text-white rounded-lg transition-colors duration-200 font-medium focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:ring-offset-2">
+                  Checkout
+                </button>
+              </div>
+            </div>
+            
+            <ng-template #emptyCart>
+              <div class="py-8 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </div>
+                <p class="text-gray-500">Your cart is empty.</p>
+                <a href="#" class="mt-3 text-sm font-medium text-[#FFA725] hover:text-[#F09000]">Start Shopping</a>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

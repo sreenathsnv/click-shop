@@ -10,6 +10,9 @@ import { User } from '../auth/models/user.model';
   providedIn: 'root'
 })
 export class UserService {
+
+
+  
   getUser(arg0: string) {
     throw new Error('Method not implemented.');
   }
@@ -44,6 +47,15 @@ export class UserService {
 
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/profile`, user);
+  }
+
+  resetPassword(email: string, newPassword: string): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(`${this.apiUrl}/reset-password`, null, {
+      params: { email, newPassword }
+    });
+  }
+  userProfile(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/profile`);
   }
   updateUserByAdmin(user: User): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/users/${user.username}/update`, user);

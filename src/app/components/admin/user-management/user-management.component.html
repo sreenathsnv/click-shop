@@ -21,6 +21,7 @@
         type="text"
         placeholder="Search users by name , role..."
         [(ngModel)]="searchQuery"
+        (ngModelChange)="applyFilters()"
         class="w-full pl-12 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-[#FFA725] focus:border-[#FFA725] transition-all outline-none"
       />
     </div>
@@ -42,17 +43,17 @@
       <div class="overflow-y-auto max-h-96 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 pr-2">
         <ul class="space-y-2">
           <li
-            *ngFor="let user of filteredUsers()"
+            *ngFor="let user of paginatedUsers"
             (click)="viewUser(user)"
             class="p-4 bg-gray-50 hover:bg-[#FFF2E1] cursor-pointer rounded-lg border border-gray-200 transition-all duration-200 flex items-center"
             [ngClass]="{'ring-2 ring-[#FFA725] bg-[#FFF2E1] border-[#FFA725]/30': selectedUser && selectedUser.id === user.id}"
           >
             <div class="flex-shrink-0 w-10 h-10 bg-[#FFA725] bg-opacity-20 rounded-full flex items-center justify-center mr-3">
-              <span class="text-[#FFA725] font-medium">{{ (user.username || 'User').charAt(0).toUpperCase() }}</span>
+              <span class="text-[#FFA725] font-medium">{{ (user?.username || 'User').charAt(0).toUpperCase() }}</span>
             </div>
             <div>
-              <div class="font-medium">{{ user.username || 'User ' + user.id }}</div>
-              <div class="text-sm text-gray-500">{{ user.email || 'N/A' }}</div>
+              <div class="font-medium">{{ user?.username || 'User ' + user.id }}</div>
+              <div class="text-sm text-gray-500">{{ user?.email || 'N/A' }}</div>
             </div>
           </li>
         </ul>
@@ -64,6 +65,45 @@
             No users found matching "<strong>{{ searchQuery }}</strong>".
           </p>
         </div>
+      </div>
+
+      <!-- Pagination Controls -->
+      <div class="mt-6 flex justify-center items-center gap-2">
+        <button 
+          (click)="goToPage(currentPage - 1)"
+          [disabled]="currentPage === 1"
+          class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300"
+        >
+          Previous
+        </button>
+        <div class="flex gap-1">
+          <button
+            *ngFor="let page of getVisiblePages()"
+            (click)="goToPage(page)"
+            [ngClass]="{
+              'px-4': true,
+              'py-2': true,
+              'rounded-lg': true,
+              'transition': true,
+              'border': true,
+              'border-gray-300': true,
+              'bg-[#FFA725]': currentPage === page,
+              'text-white': currentPage === page,
+              'bg-white': currentPage !== page,
+              'text-gray-700': currentPage !== page,
+              'hover:bg-[#FFF2E1]': currentPage !== page
+            }"
+          >
+            {{ page }}
+          </button>
+        </div>
+        <button 
+          (click)="goToPage(currentPage + 1)"
+          [disabled]="currentPage === totalPages"
+          class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-300"
+        >
+          Next
+        </button>
       </div>
     </div>
 
@@ -78,11 +118,11 @@
         <div class="mb-4 p-4 bg-[#FFF2E1] rounded-lg border border-[#FFA725]/30">
           <div class="flex items-center mb-4">
             <div class="w-12 h-12 bg-[#FFA725] rounded-full flex items-center justify-center mr-3">
-              <span class="text-white text-lg font-semibold">{{ selectedUser.username?.charAt(0).toUpperCase() || 'U' }}</span>
+              <span class="text-white text-lg font-semibold">{{ selectedUser?.username?.charAt(0).toUpperCase() || 'U' }}</span>
             </div>
             <div>
-              <h4 class="text-lg font-semibold">{{ selectedUser.username || 'User ' + selectedUser.id }}</h4>
-              <p class="text-sm text-gray-600">{{ selectedUser.role || 'User' }}</p>
+              <h4 class="text-lg font-semibold">{{ selectedUser?.username || 'User ' + selectedUser.id }}</h4>
+              <p class="text-sm text-gray-600">{{ selectedUser?.role || 'User' }}</p>
             </div>
           </div>
         </div>
@@ -95,7 +135,7 @@
           
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">Email</p>
-            <p class="font-medium">{{ selectedUser.email || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.email || 'N/A' }}</p>
           </div>
         </div>
         
@@ -103,39 +143,31 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">House Name</p>
-            <p class="font-medium">{{ selectedUser.houseName || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.houseName || 'N/A' }}</p>
           </div>
           
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">Street</p>
-            <p class="font-medium">{{ selectedUser.street || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.street || 'N/A' }}</p>
           </div>
           
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">District</p>
-            <p class="font-medium">{{ selectedUser.district || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.district || 'N/A' }}</p>
           </div>
           
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">State</p>
-            <p class="font-medium">{{ selectedUser.state || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.state || 'N/A' }}</p>
           </div>
           
           <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
             <p class="text-xs text-gray-500 mb-1">Zipcode</p>
-            <p class="font-medium">{{ selectedUser.zipcode || 'N/A' }}</p>
+            <p class="font-medium">{{ selectedUser?.zipcode || 'N/A' }}</p>
           </div>
         </div>
         
         <div class="mt-6 flex justify-end space-x-3">
-          <!-- <button class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg transition-all duration-200" [routerLink]="['/admin/dashboard/users/update']">
-            <span class="flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </span>
-            Edit
-          </button> -->
           <button class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-all duration-200">
             <span class="flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

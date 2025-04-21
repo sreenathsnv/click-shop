@@ -17,6 +17,7 @@ export class ProductUpdateConsoleComponent {
   productId: string ="";
   successMessage = '';
   loading = false;
+  categories:string[]= [];
 
   constructor(
     private fb: FormBuilder,
@@ -30,7 +31,9 @@ export class ProductUpdateConsoleComponent {
       description: [''],
       price: [null, [Validators.required, Validators.min(0)]],
       quantity: [null, [Validators.required, Validators.min(0)]],
-      available: [false] // Initially setting available to false
+      available: [false], // Initially setting available to false
+      category: [''],
+  imageURL: ['', Validators.pattern(/^https?:\/\/.+\.(jpg|jpeg|png|gif|webp|svg)$/i)],
     });
   }
 
@@ -40,6 +43,13 @@ export class ProductUpdateConsoleComponent {
     
     
     this.loadProductDetails();
+
+    this.productService.getAllCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => console.error('Failed to fetch categories:', err)
+    });
   }
 
   loadProductDetails() {
@@ -51,7 +61,9 @@ export class ProductUpdateConsoleComponent {
           description: product.description,
           price: product.price,
           quantity: product.quantity,
-          available: product.quantity > 0 
+          available: product.quantity > 0 ,
+          imageURL:product.imageURL,
+          category:product.category
         });
       },
       error: (err) => {
@@ -84,7 +96,7 @@ export class ProductUpdateConsoleComponent {
     this.productService.updateProduct(formValue).subscribe({
       next: () => {
         this.toastr.success('Product updated successfully!');
-        // this.router.navigate(['/admin/dashboard/product/view']);
+        this.router.navigate(['/admin/dashboard/products/view']);
       },
       error: (err:any) => {
         console.error('Error updating product:', err);

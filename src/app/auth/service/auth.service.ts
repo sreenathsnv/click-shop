@@ -21,9 +21,20 @@ export class AuthService {
     private router: Router
   ) {}
 
-  signup(userData: { username: string, password: string, firstName: string, lastName: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/register`, userData);
+  signup(userData: {
+    username: string,
+    password: string,
+    email: string,
+    role: string,
+    houseName: string,
+    street: string,
+    district: string,
+    state: string,
+    zipcode: string
+  }): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/auth/register`, userData);
   }
+  
 
   login(credentials: { username: string, password: string }): Observable<User> {
     const isLocalhost= window.location.hostname === 'localhost';
@@ -39,6 +50,13 @@ export class AuthService {
     );
   }
 
+
+  resetPassword(email: string, newPassword: string): Observable<string> {
+    return this.http.post<string>(`${this.apiUrl}/reset-password`, null, {
+      params: { email, newPassword }
+    });
+  }
+  
   getUserDetails(): Observable<User> {
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',

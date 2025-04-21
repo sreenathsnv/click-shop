@@ -16,6 +16,13 @@ import { ProductAddConsoleComponent } from './components/admin/product/product-a
 import { ProductUpdateConsoleComponent } from './components/admin/product/product-update-console/product-update-console.component';
 import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
 import { DashboardConsoleComponent } from './components/admin/dashboard-console/dashboard-console.component';
+import { ProductViewComponent } from './components/home/product-view/product-view.component';
+import { CartComponent } from './components/cart/cart.component';
+import { OrderCartComponent } from './components/order/order-cart/order-cart.component';
+import { DirectOrderComponent } from './components/order/direct-order/direct-order.component';
+import { OrdersComponent } from './components/order/orders/orders.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { UserProfileComponent } from './components/auth/user-profile/user-profile.component';
 
 const routes: Routes = [
   {
@@ -28,10 +35,45 @@ const routes: Routes = [
         canActivate: [AuthGuard],
       },
       {
+       path: 'cart', 
+       component: CartComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+       path: 'profile', 
+       component: UserProfileComponent,
+        canActivate: [AuthGuard],
+      },
+
+
+      {
+       path: 'order', 
+       children:[
+        {
+          path: 'cart',
+          component: OrderCartComponent,
+          canActivate: [AuthGuard],
+        },
+        { 
+          path: 'buy/:id', 
+          component: DirectOrderComponent,
+          canActivate: [AuthGuard],
+         },
+        { 
+          path: 'view', 
+          component: OrdersComponent,
+          canActivate: [AuthGuard],
+         }
+       ]
+      },
+
+
+      {
         path: '',
         component: HomeComponent,
         pathMatch: 'full',
       },
+      { path: 'product/:id', component: ProductViewComponent },
     ],
   },
   {
@@ -45,6 +87,10 @@ const routes: Routes = [
       {
         path: 'signup',
         component: SignupComponent,
+      },
+      {
+        path: 'reset',
+        component: ResetPasswordComponent,
       },
     ],
   },

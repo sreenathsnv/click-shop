@@ -28,6 +28,15 @@ import { ProductUpdateConsoleComponent } from './components/admin/product/produc
 import { OrderViewConsoleComponent } from './components/admin/order/order-view-console/order-view-console.component';
 import { DashboardConsoleComponent } from './components/admin/dashboard-console/dashboard-console.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { ProductViewComponent } from './components/home/product-view/product-view.component';
+import { SearchBarComponent } from './components/home/search-bar/search-bar.component';
+import { CartComponent } from './components/cart/cart.component';
+import { OrderCartComponent } from './components/order/order-cart/order-cart.component';
+import { DirectOrderComponent } from './components/order/direct-order/direct-order.component';
+import { OrdersComponent } from './components/order/orders/orders.component';
+import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
+import { UserProfileComponent } from './components/auth/user-profile/user-profile.component';
+
 
 @NgModule({
   declarations: [
@@ -47,7 +56,15 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     ProductAddConsoleComponent,
     ProductUpdateConsoleComponent,
     OrderViewConsoleComponent,
-    DashboardConsoleComponent
+    DashboardConsoleComponent,
+    ProductViewComponent,
+    SearchBarComponent,
+    CartComponent,
+    OrderCartComponent,
+    DirectOrderComponent,
+    OrdersComponent,
+    ResetPasswordComponent,
+    UserProfileComponent
     
   ],
   imports: [

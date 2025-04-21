@@ -1,0 +1,132 @@
+<div class="max-w-xl mx-auto bg-white rounded-lg shadow-lg p-4 sm:p-6 mt-8" *ngIf="product">
+    <!-- Product Header -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+      <h1 class="text-xl sm:text-2xl font-bold text-gray-800">{{ product.name }}</h1>
+      <div class="mt-2 md:mt-0 text-lg font-semibold text-[#FFA725]">₹{{ product.price }}</div>
+    </div>
+  
+    <!-- Product Image with Badge -->
+    <div class="relative mb-6">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" class="w-full h-64 sm:h-72 object-cover rounded-md shadow-sm" />
+      <div class="absolute top-3 right-3 bg-[#FFA725] text-white text-xs font-semibold px-2 py-1 rounded-full">
+        In Stock
+      </div>
+    </div>
+  
+    <!-- Product Description -->
+    <div class="mb-6">
+      <h2 class="text-sm uppercase tracking-wider text-gray-500 font-semibold mb-2">About this product</h2>
+      <p class="text-gray-700 leading-relaxed">{{ product.description }}</p>
+    </div>
+  
+    <!-- Divider -->
+    <div class="border-t border-gray-200 my-5"></div>
+  
+    <!-- Quantity Selector (Updated to match example) -->
+    <div class="mb-6">
+      <label class="block mb-2 text-sm font-medium text-gray-700">Quantity</label>
+      <div class="flex items-center gap-2">
+        <button
+          (click)="decreaseQuantity()"
+          class="text-[#FFA725] p-2 rounded-lg hover:bg-amber-100 transition-colors duration-200"
+          [disabled]="quantity <= 1"
+          [ngClass]="{'opacity-50 cursor-not-allowed': quantity <= 1}"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20 12H4"
+            />
+          </svg>
+        </button>
+        <input
+          type="number"
+          [value]="quantity"
+          class="w-16 p-2 border border-[#FFA725] rounded-lg text-center focus:outline-none focus:ring-2 focus:ring-[#FFA725] focus:border-transparent"
+          min="1"
+          readonly
+        />
+        <button
+          (click)="increaseQuantity()"
+          class="text-[#FFA725] p-2 rounded-lg hover:bg-amber-100 transition-colors duration-200"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 4v16m8-8H4"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Total Amount -->
+    <div class="flex items-center justify-between bg-gray-50 rounded-md p-4 mb-6">
+      <span class="text-gray-700 font-medium">Total Amount</span>
+      <span class="text-lg sm:text-xl font-bold text-[#FFA725]">₹{{ quantity * product.price }}</span>
+    </div>
+  
+    <!-- Buy Button -->
+    <button
+      (click)="placeOrder()"
+      class="flex items-center justify-center w-full bg-[#FFA725] hover:bg-[#E89000] text-white px-4 py-3 rounded-md font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#FFA725]"
+      [disabled]="loading"
+    >
+      <svg *ngIf="loading" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      <svg *ngIf="!loading" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+      </svg>
+      {{ loading ? 'Processing...' : 'Buy Now' }}
+    </button>
+  
+    <!-- Features -->
+    <div class="grid grid-cols-2 gap-4 mt-8">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#FFA725]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-sm text-gray-600">Free Delivery</span>
+      </div>
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#FFA725]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-sm text-gray-600">7-Day Return</span>
+      </div>
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#FFA725]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-sm text-gray-600">Secure Payment</span>
+      </div>
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2 text-[#FFA725]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        <span class="text-sm text-gray-600">Warranty</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Loading State -->
+  <div *ngIf="!product" class="max-w-xl mx-auto mt-16 text-center">
+    <div class="animate-spin mx-auto mb-4 h-10 w-10 border-4 border-gray-200 rounded-full border-t-[#FFA725]"></div>
+    <p class="text-gray-500 font-medium">Loading product details...</p>
+  </div>

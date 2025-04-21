@@ -1,7 +1,6 @@
-<!-- product-card.component.html -->
-<div class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 border border-gray-100">
+<div  class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-all duration-200 border border-gray-100">
   <div class="relative">
-      <img [src]="'/assets/' + product.image" 
+      <img [src]="product.imageURL" 
            alt="{{product.name}}" 
            class="w-full h-52 object-cover">
       <!-- <div class="absolute top-0 right-0 bg-white bg-opacity-90 px-3 py-1 m-2 rounded text-sm font-medium text-gray-700 shadow-sm">
@@ -10,11 +9,11 @@
   </div>
   <div class="p-4">
     <div class="flex justify-between items-start mb-1">
-      <h3 [ngClass]="['text-lg', 'font-medium', 'text-' + theme.textColor + '-800']">
+      <h3 (click)="navigateToProduct(product.id)" [ngClass]="['text-lg','cursor-pointer', 'font-medium', 'text-' + theme.textColor + '-800']">
         {{product.name}}
       </h3>
-      <p [ngClass]="['text-' + theme.textColor + '-700', 'font-semibold']">
-        ${{product.price | number:'1.2-2'}}
+      <p [ngClass]="['text-' + theme.textColor + '-700', 'font-semibold','cursor-pointer']">
+        ₹{{product.price | number:'1.2-2'}}
       </p>
     </div>
     

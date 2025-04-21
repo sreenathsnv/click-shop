@@ -1,6 +1,6 @@
 // product.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Product } from '../models/product.model';
@@ -12,25 +12,48 @@ import { Product } from '../models/product.model';
 export class ProductService {
 
   private apiUrl = 'http://localhost:8185/api/products'; 
-  
-  constructor(private http: HttpClient) {}
+  token:string | null;
+  constructor(private http: HttpClient) {
 
+    this.token = this.getTokenFromCookies();
+ 
+    
+  }
+ 
+  private getTokenFromCookies(): string | null {
+    const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+    
+
+    return match ? match[2] : null;
+  }
+  private getHeaders(): HttpHeaders {
+    this.token = this.getTokenFromCookies()
+    console.log("token",this.token)
+    return new HttpHeaders({
+      Authorization: this.token ? `Bearer ${this.token}` : '',
+      'Content-Type': 'application/json',
+    });
+  }
 
   addProduct(product: Product): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, product);
+    const headers = this.getHeaders();
+    return this.http.post(`${this.apiUrl}`, product,{headers});
   }
   
     // Fetch product by ID
     getProductById(id: string): Observable<any> {
+      
       return this.http.get<any>(`${this.apiUrl}/${id}`);
     }
   
     // Update product
     updateProduct(product: any): Observable<any> {
-      return this.http.put<any>(`${this.apiUrl}/${product.id}`, product);
+      const headers = this.getHeaders();
+      return this.http.put<any>(`${this.apiUrl}/${product.id}`, product,{headers});
     }
     deleteProduct(id: string): Observable<any> {
-      return this.http.delete<any>(`${this.apiUrl}/${id}`).pipe(
+      const headers = this.getHeaders();
+      return this.http.delete<any>(`${this.apiUrl}/${id}`,{headers}).pipe(
         tap(() => console.log(`Product with ID ${id} deleted`)),
         catchError(this.handleError)
       );
@@ -55,5 +78,11 @@ export class ProductService {
     }
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
+  }
+  // All available categories
+  getAllCategories(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/categories`).pipe(
+      catchError(this.handleError)
+    );
   }
 }

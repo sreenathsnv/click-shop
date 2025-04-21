@@ -1,0 +1,89 @@
+/* Add these styles to your component or global CSS */
+
+/* Custom theme colors */
+:root {
+    --primary-color: #FFA725;
+    --primary-hover: #F09000;
+    --light-bg: #f8f9fa;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+  }
+  
+  /* Make the primary color buttons look better */
+  .btn-primary,
+  .btn[style*="background-color: #FFA725"] {
+    background-color: var(--primary-color) !important;
+    border-color: var(--primary-color) !important;
+    color: white !important;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-primary:hover,
+  .btn[style*="background-color: #FFA725"]:hover {
+    background-color: var(--primary-hover) !important;
+    border-color: var(--primary-hover) !important;
+  }
+  
+  /* Custom outline buttons */
+  .btn-outline-secondary[style*="border-color: #FFA725"] {
+    border-color: var(--primary-color) !important;
+    color: var(--primary-color) !important;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-outline-secondary[style*="border-color: #FFA725"]:hover {
+    background-color: rgba(255, 167, 37, 0.1) !important;
+  }
+  
+  /* Card styling */
+  .card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: none !important;
+  }
+  
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08) !important;
+  }
+  
+  /* Form control focus state */
+  .form-control:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.25rem rgba(255, 167, 37, 0.25) !important;
+  }
+  
+  /* Custom badge colors */
+  .badge.bg-warning {
+    background-color: var(--primary-color) !important;
+    color: white !important;
+  }
+  
+  /* Background light areas */
+  .bg-light {
+    background-color: var(--light-bg) !important;
+    border-radius: 0.5rem;
+  }
+  
+  /* Improved spacing and fonts */
+  body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    color: var(--text-primary);
+  }
+  
+  h2, h4 {
+    font-weight: 600;
+  }
+  
+  .text-secondary {
+    color: var(--text-secondary) !important;
+  }
+  
+  /* Add subtle animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .card {
+    animation: fadeIn 0.3s ease-out;
+  }

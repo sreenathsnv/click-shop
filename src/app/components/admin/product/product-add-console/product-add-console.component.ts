@@ -16,6 +16,8 @@ export class ProductAddConsoleComponent implements OnInit {
   productForm: FormGroup;
   submitted = false;
   successMessage = '';
+  categories:string[]= []
+
 
   constructor(
     private fb: FormBuilder,
@@ -28,7 +30,9 @@ export class ProductAddConsoleComponent implements OnInit {
       description: [''],
       price: [null, [Validators.required, Validators.min(0)]],
       quantity: [null, [Validators.required, Validators.min(0)]],
-      available: [false]
+      available: [false],
+      category: [""],
+      imageURL: ['']
     });
   }
 
@@ -41,6 +45,13 @@ export class ProductAddConsoleComponent implements OnInit {
       } else if (value > 0) {
         this.productForm.get('available')?.setValue(true, { emitEvent: false });
       }
+    });
+
+    this.productService.getAllCategories().subscribe({
+      next: (data) => {
+        this.categories = data;
+      },
+      error: (err) => console.error('Failed to fetch categories:', err)
     });
   }
 

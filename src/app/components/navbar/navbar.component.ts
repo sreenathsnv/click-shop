@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/service/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,21 +10,29 @@ import { Router } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+
+  @Input() cartItemCount:number = 0;
+
   isMenuOpen = false;
   brandColor = '#FFA725';
   isLoggedIn:boolean;
   userRole:string  = "";
-  cartItemCount:number=0;
+ 
 
   constructor(private authService:AuthService,
-    private cookieService: CookieService,
+
+    
     private router: Router
   ){
     this.isLoggedIn = this.authService.isLoggedIn();
     authService.getUserDetails().subscribe(data=>
       this.userRole = data.role
     )
+  }
+  ngOnInit(): void {
+    
+  
   }
 
   toggleMenu() {

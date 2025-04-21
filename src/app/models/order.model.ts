@@ -12,3 +12,6 @@ export interface OrderItem {
     createdAt: string;
     orderItems: OrderItem[];
   }
+  export interface OrderItemWithDetails extends OrderItem {
+    name: string;
+  }
