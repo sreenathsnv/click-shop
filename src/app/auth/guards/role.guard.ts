@@ -30,6 +30,6 @@ export class RoleGuard implements CanActivate {
       return this.router.createUrlTree(['/home']);
     }
     
-    return this.router.createUrlTree(['/unauthorized']);
+    return this.router.createUrlTree(['/home']);
   }
 }

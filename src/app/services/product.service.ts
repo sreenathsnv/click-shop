@@ -13,9 +13,15 @@ export class ProductService {
 
   private apiUrl = 'http://localhost:8185/api/products'; 
   token:string | null;
+  products:Product[]=[];
+
   constructor(private http: HttpClient) {
 
+    console.log("it is called...");
+    
     this.token = this.getTokenFromCookies();
+    console.log("token is found"+this.token)
+    this.getProducts().subscribe(data=>this.products = data)
  
     
   }
@@ -27,16 +33,24 @@ export class ProductService {
     return match ? match[2] : null;
   }
   private getHeaders(): HttpHeaders {
+
+    
     this.token = this.getTokenFromCookies()
     console.log("token",this.token)
-    return new HttpHeaders({
+
+    let headers = new HttpHeaders({
       Authorization: this.token ? `Bearer ${this.token}` : '',
       'Content-Type': 'application/json',
     });
+    if (this.token) {
+      headers = headers.set('Authorization', `Bearer ${this.token}`);
+    }
+    return headers;
   }
 
   addProduct(product: Product): Observable<any> {
     const headers = this.getHeaders();
+    console.log("headers : "+headers)
     return this.http.post(`${this.apiUrl}`, product,{headers});
   }
   
@@ -85,4 +99,5 @@ export class ProductService {
       catchError(this.handleError)
     );
   }
+
 }

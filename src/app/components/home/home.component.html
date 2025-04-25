@@ -70,7 +70,7 @@
                  class="w-full sm:w-40 accent-teal-500">
           <input type="range" 
                  [(ngModel)]="priceRange[1]" 
-                 [min]="minPrice" 
+                 [min]="priceRange[0]+1" 
                  [max]="maxPrice" 
                  (input)="filterProducts()"
                  class="w-full sm:w-40 accent-teal-500">

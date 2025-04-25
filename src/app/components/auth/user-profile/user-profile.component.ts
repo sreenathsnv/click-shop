@@ -6,6 +6,7 @@ import { UserService } from '../../../services/user.service';
 import { OrderService } from '../../../services/order.service';
 import { CartService } from '../../../services/cart.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -25,7 +26,8 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private orderService: OrderService,
-    private cartService: CartService
+    private cartService: CartService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -95,5 +97,9 @@ export class UserProfileComponent implements OnInit {
       },
     });
   }
+
+  buyAll(): void {
+    this.router.navigate(['/order/cart'])
+   }
   
 }

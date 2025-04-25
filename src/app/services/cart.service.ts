@@ -13,12 +13,20 @@ export class CartService {
   private cartItems$ = this.cartItems.asObservable();
 
   constructor(private http: HttpClient) {
-    this.token = localStorage.getItem('authToken');
+    this.token = this.getTokenFromCookies();
+    
     // Initialize cart items on service creation
     this.fetchCartItems().subscribe();
   }
 
+  private getTokenFromCookies(): string | null {
+    const match = document.cookie.match(new RegExp('(^| )auth_token=([^;]+)'));
+    
+
+    return match ? match[2] : null;
+  }
   private getHeaders(): HttpHeaders {
+    this.token = this.getTokenFromCookies()
     return new HttpHeaders({
       Authorization: this.token ? `Bearer ${this.token}` : '',
       'Content-Type': 'application/json'
@@ -34,12 +42,12 @@ export class CartService {
     );
   }
 
-  // Get all cart items (returns cached items or fetches if empty)
+  // Get all cart items 
   getCartItems(): Observable<CartItem[]> {
     return this.cartItems$.pipe(
       switchMap(items => {
         if (items.length === 0) {
-          return this.fetchCartItems(); // Fetch only if cache is empty
+          return this.fetchCartItems(); 
         }
         return of(items);
       })

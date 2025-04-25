@@ -20,6 +20,7 @@ import { OrderService } from '../../../services/order.service';
 import { Order } from '../../../models/order.model';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas-pro';
+import { Router } from '@angular/router';
 
 
 // Define a type for chart options to ensure plain objects
@@ -314,7 +315,9 @@ export class DashboardConsoleComponent implements OnInit {
     return this._userChart.grid || {};
   }
 
-  constructor(private dashboardService: DashboardService, private orderService: OrderService) {}
+  constructor(private dashboardService: DashboardService, 
+              private orderService: OrderService,
+              private router:Router) {}
 
   ngOnInit(): void {
     this.dashboardService.getStats().subscribe({
@@ -450,4 +453,9 @@ export class DashboardConsoleComponent implements OnInit {
       });
     }, 500);
   }
+
+  goToAddProduct(){
+    this.router.navigate(['/admin/dashboard/products/add'])
+  }
+
 }

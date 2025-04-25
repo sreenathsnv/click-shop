@@ -36,6 +36,7 @@ import { DirectOrderComponent } from './components/order/direct-order/direct-ord
 import { OrdersComponent } from './components/order/orders/orders.component';
 import { ResetPasswordComponent } from './components/auth/reset-password/reset-password.component';
 import { UserProfileComponent } from './components/auth/user-profile/user-profile.component';
+import { AvgRatingPipe } from './services/pipe/avg-rating.pipe';
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import { UserProfileComponent } from './components/auth/user-profile/user-profil
     DirectOrderComponent,
     OrdersComponent,
     ResetPasswordComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    AvgRatingPipe
     
   ],
   imports: [

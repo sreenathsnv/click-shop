@@ -29,8 +29,8 @@ import { ProductService } from '../../../services/product.service';
   ]
 })
 export class SearchBarComponent implements OnInit, OnDestroy {
-  @Input() brandColor: string = '#FFA725'; // Default to match theme
-  @Input() isMobile: boolean = false; // To adjust styling for mobile
+  @Input() brandColor: string = '#FFA725'; 
+  @Input() isMobile: boolean = false; 
 
   searchQuery: string = '';
   searchResults: Product[] = [];
@@ -83,8 +83,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
     this.searchResults = this.products.filter(product =>
       product.name.toLowerCase().includes(query.toLowerCase()) ||
-      product.description?.toLowerCase().includes(query.toLowerCase())
-    ).slice(0, 5); // Limit to 5 suggestions
+      product.description?.toLowerCase().includes(query.toLowerCase()) ||
+      product.category?.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 10); // Limit to 5 suggestions
   }
 
   selectProduct(product: Product) {
